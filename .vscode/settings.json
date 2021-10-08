@@ -1,5 +1,10 @@
 {
     "code-runner.executorMap": { //configurando nosso projeto, esse json só é especifico desse projeto, as alterações aqui não afetarão outros projetos.
         "typescript": "npx ts-node --files --transpile-only",
+    },
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.fixAll.eslint": true,
     }
 }
