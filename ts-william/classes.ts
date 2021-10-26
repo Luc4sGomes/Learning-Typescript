@@ -38,7 +38,6 @@ class CharAccount extends UserAccount {
 }
 
 const jon = new CharAccount('jon', 13, 'jonmaster', 9);
-const will = new UserAccount('foo', 1);
 
 console.log(jon.logDetais());
 jon.setLevel = 399;
