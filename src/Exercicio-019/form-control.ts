@@ -8,9 +8,9 @@ const email = document.querySelector('.email') as HTMLInputElement;
 const password = document.querySelector('.password') as HTMLInputElement;
 const password2 = document.querySelector('.password2') as HTMLInputElement;
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', function (event) {
   event.preventDefault();
-  hideErrorMessages(form);
+  hideErrorMessages(this);
   checkForEmptyFields(userName, email, password, password2);
   checkEmail(email);
   checkEqualPasswords(password, password2);
