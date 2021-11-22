@@ -2,13 +2,15 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/A2-webpack/index.ts',
+  entry: './src/Exercicio-019/Exercicio-019',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+        loader: 'ts-loader',
+        configFile: 'tsconfig.frontend.json',
       },
     ],
   },
@@ -17,7 +19,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist', 'assets', 'js'),
+    path: path.resolve(__dirname, 'frontend', 'assets', 'js'),
   },
 
   devtool: 'source-map',
