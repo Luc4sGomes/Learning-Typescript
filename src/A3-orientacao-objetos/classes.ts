@@ -20,7 +20,6 @@ export class Empresa {
     }
   }
 }
-
 export class Colaborador {
   //criando um colaborador
   constructor(public readonly name: string, public readonly lastName: string) {}
