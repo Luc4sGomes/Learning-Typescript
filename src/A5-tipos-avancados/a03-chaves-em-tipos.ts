@@ -30,3 +30,17 @@ class carro1 implements Veic {
     this.ano = ano;
   }
 }
+
+class Evento {
+  private data: string;
+  private hora: string;
+
+  constructor(data: string, hora: string) {
+    this.data = data;
+    this.hora = hora;
+  }
+}
+
+class EventoEspecifico extends Evento {}
+
+const ev = new EventoEspecifico('a', 'b');
