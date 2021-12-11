@@ -21,5 +21,6 @@ console.log(arrayFiltradoOriginal);
 
 const arrayFiltrado = meuFilter(array, (value) => value < 5);
 console.log(arrayFiltrado);
+console.log(arrayFiltrado);
 
 //quando eu nao sei qual coisa eu vou receber geralmente eu informo
