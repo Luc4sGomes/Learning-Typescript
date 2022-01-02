@@ -184,3 +184,129 @@ class Thing {
     this._size = num;
   }
 }
+// =================================================================== //
+//Assinaturas de indice
+//as classes podem declarar assinaturasa de indice; estes funcionam da mesma forma que as assianturas de indice para outros tipos de objetos
+
+class MyClass {
+  [s: string]: boolean | ((s: string) => boolean);
+
+  check(s: string) {
+    return this[s] as boolean;
+  }
+}
+
+//Como o tipo de assinatura de índice também precisa capturar os tipos de métodos, não é fácil usar esses tipos de maneira útil. Geralmente, é melhor armazenar os dados indexados em outro lugar, em vez de na própria instância da classe.
+
+// =================================================================== //
+//Herança de classe
+// Como outras linguagens com recursos orientados a objetos, as classes em JavaScript podem herdar de classes base.
+
+//implements Cláusulas
+
+//Você pode usar uma implements cláusula para verificar se uma classe satisfaz uma determinada interface. Um erro será emitido se uma classe falhar em implementá-lo corretamente:
+interface Pingable {
+  ping(): void;
+}
+
+class Sonar implements Pingable {
+  ping() {
+    console.log('Ping!');
+  }
+}
+
+class Ball implements Pingable {
+  ping(): void {
+    //tne
+  }
+  pong() {
+    console.log('pong!');
+  }
+}
+
+//As classes também podem implementar várias interfaces, por exemplo class C implements A, B {...}
+
+//Cuidados
+//É importante entender que uma implementscláusula é apenas uma verificação de que a classe pode ser tratada como o tipo de interface. Isso não muda o tipo da classe ou seus métodos em tudo . Uma fonte comum de erro é presumir que uma implementscláusula mudará o tipo de classe - não muda!
+
+interface Checkable {
+  check(name: string): boolean;
+}
+
+class NameChacker implements Checkable {
+  check(s) {
+    //tipo any
+    return s.toLowerCase() === 'ok';
+  }
+}
+
+//Neste exemplo, talvez esperássemos que so tipo de fosse influenciado pelo name: stringparâmetro de check. Não é - as implementscláusulas não mudam a forma como o corpo da classe é verificado ou seu tipo inferido.
+
+//Da mesma forma, implementar uma interface com uma propriedade opcional não cria essa propriedade:
+interface A {
+  x: number;
+  y?: number;
+}
+
+class B implements A {
+  x = 0;
+}
+const b = new B();
+C.y = 10;
+
+// ===================================================================== //
+
+// extends Cláusulas
+// As classes podem ser extendde uma classe base. Uma classe derivada tem todas as propriedades e métodos de sua classe base e também define membros adicionais.
+
+class Animal {
+  move() {
+    console.log('moving along');
+  }
+}
+
+class Dog extends Animal {
+  woof(times: number) {
+    for (let i = 0; i < times; i++) {
+      console.log('woof!');
+    }
+  }
+}
+const poodle = new Dog();
+poodle.move(); //metodo da classe base
+poodle.woof(2); //metodo da classe derivada
+
+//Métodos de substituição
+
+//Uma classe derivada também pode substituir um campo ou propriedade da classe base. Você pode usar a super.sintaxe para acessar os métodos da classe base. Observe que, como as classes JavaScript são um objeto de pesquisa simples, não há noção de um “supercampo”.
+
+//O TypeScript impõe que uma classe derivada seja sempre um subtipo de sua classe base.
+
+//Por exemplo, esta é uma maneira legal de substituir um método:
+
+class Base2 {
+  greet() {
+    console.log('hello, world');
+  }
+}
+
+class Derived2 extends Base2 {
+  greet(name?: string) {
+    if (name === undefined) {
+      super.greet();
+    } else {
+      console.log(`Hello, ${name.toUpperCase()}`);
+    }
+  }
+}
+
+const d = new Derived2();
+d.greet();
+d.greet('reader');
+
+//É importante que uma classe derivada siga seu contrato de classe base. Lembre-se de que é muito comum (e sempre legal!) Referir-se a uma instância de classe derivada por meio de uma referência de classe base:
+
+//Alias the derived instance through a base
+const b2: Base2 = d;
+//no problem
+b2.greet();
