@@ -310,3 +310,134 @@ d.greet('reader');
 const b2: Base2 = d;
 //no problem
 b2.greet();
+
+//E se Derived não seguir Base o contrato de?
+
+class Base3 {
+  greet() {
+    console.log('hello world');
+  }
+}
+
+class Derived3 extends Base3 {
+  //fazer esse parametro requirido
+  greet(name: string) {
+    console.log(`Hello, ${name.toUpperCase()}`);
+  }
+}
+
+//Se compilássemos este código apesar do erro, este exemplo travaria:
+const b3: Base3 = new Derived3();
+//crasharia aqui porque o "name" vai ser undefined
+b3.greet();
+
+//Ordem de Inicialização
+
+//A ordem de inicialização das classes JavaScript pode ser surpreendente em alguns casos. Vamos considerar este código:
+
+class Base4 {
+  name = 'base';
+  constructor() {
+    console.log('my name is ' + this.name);
+  }
+}
+
+class Derived4 extends Base4 {
+  name = 'derived';
+}
+
+//prints "base", not "derived"
+const d4 = new Derived4();
+
+//O que aconteceu aqui?
+
+//A ordem de inicialização da classe, conforme definida pelo JavaScript, é:
+
+//Os campos da classe base são inicializados
+//O construtor da classe base é executado
+//Os campos da classe derivada são inicializados
+//O construtor da classe derivada é executado
+//Isso significa que o construtor da classe base viu seu próprio valor namedurante seu próprio construtor, porque as //inicializações do campo da classe derivada ainda não foram executadas.
+
+// ================================================= //
+
+//herdando tipos integrados
+
+//No ES2015, os construtores que retornam um objeto substituem implicitamente o valor de thispara qualquer chamador de super(...). É necessário que o código do construtor gerado capture qualquer valor de retorno potencial de super(...)e substitua-o por this.
+
+//Como resultado, a criação de subclasses Error, Arraye outros podem não funcionar mais conforme o esperado. Isto é devido ao fato de que funções construtoras para Error, Arraye os como o uso ECMAScript 6 de new.targetajustar a cadeia de protótipos; entretanto, não há como garantir um valor new.targetao invocar um construtor no ECMAScript 5. Outros compiladores de nível inferior geralmente têm a mesma limitação por padrão.
+
+//Para uma subclasse como a seguinte:
+
+class MsgError extends Error {
+  constructor(m: string) {
+    super(m);
+  }
+  sayHello() {
+    return 'hello ' + this.message;
+  }
+}
+
+//você pode descobrir que:
+
+//os métodos podem estar undefinedem objetos retornados pela construção dessas subclasses, portanto, a chamada sayHelloresultará em um erro.
+//instanceofserá dividido entre as instâncias da subclasse e suas instâncias, portanto (new MsgError()) instanceof MsgError, retornará false.
+
+//Como recomendação, você pode ajustar manualmente o protótipo imediatamente após qualquer super(...)chamada.
+
+class MsgError2 extends Error {
+  constructor(m: string) {
+    super(m);
+
+    //altera o prototipo explicito
+
+    Object.setPrototypeOf(this, MsgError.prototype);
+  }
+
+  sayHello() {
+    return 'hello ' + this.message;
+  }
+}
+
+// ================================================================== //
+//Visibilidade do membro
+
+//Você pode usar o TypeScript para controlar se determinados métodos ou propriedades são visíveis para o código fora da classe.
+
+//1. public
+// A visibilidade padrão dos membros da classe é public. Um publicmembro pode ser acessado em qualquer lugar:
+
+class Greeter2 {
+  public greet() {
+    console.log('hi!');
+  }
+}
+
+const g2 = new Greeter2();
+g2.greet();
+
+//Como publicjá é o modificador de visibilidade padrão, você nunca precisa escrevê-lo em um membro da classe, mas pode optar por fazê-lo por motivos de estilo / legibilidade.
+
+//2. protected
+//protected os membros são visíveis apenas para as subclasses da classe em que foram declarados.
+
+class Greeter3 {
+  public greet() {
+    console.log('hello, ' + this.getName());
+  }
+
+  protected getName() {
+    return 'hi';
+  }
+}
+
+class SpecialGreeter extends Greeter3 {
+  public howdy() {
+    //ok para acessar o membro protected aqui
+    console.log('howdy, ' + this.getName());
+  }
+}
+
+const g3 = new SpecialGreeter();
+g3.greet();
+g3.getName(); //Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses
