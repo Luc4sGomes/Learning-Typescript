@@ -547,3 +547,143 @@ console.log(s2.secretKey);
 
 //OK
 console.log(s2["secretKey"]);
+
+//Ao contrário dos TypeScripts private, os campos privados do JavaScript ( #) permanecem privados após a compilação e não fornecem as hachuras de escape mencionadas anteriormente, como acesso à notação de colchetes, tornando-os totalmente privados .
+
+class Dog2 {
+    #barkAmount = 0;
+    personality = "happy";
+
+    constructor() {}
+}
+
+
+// ===================================== //
+
+//Membros estáticos
+
+//As classes podem ter staticmembros. Esses membros não estão associados a uma instância específica da classe. Eles podem ser acessados ​​por meio do próprio objeto construtor de classe:
+
+class MyClass2 {
+    static x = 0; //declarando um atributo estatico
+    static printX() { //declarando um metodo estatico
+        console.log(MyClass2.x);
+    }
+}
+console.log(MyClass2.x); //usando o atributo fora da classe sem precisar de uma instancia
+MyClass2.printX(); //usando o metodo estatico da classe sem precisar de uma instancia da classe
+
+
+//Membros estáticos também pode usar os mesmos public, protectede privatede visibilidade modificadores:
+
+class Base9 {
+    static getGreeting() {
+        return "hello world";
+    }
+}
+
+class Derived9 extends Base9 {
+    myGreeting = Derived9.getGreeting();
+}
+
+//Nomes estáticos especiais
+
+//Geralmente não é seguro / possível sobrescrever propriedades do Function protótipo. Como as classes são funções que podem ser chamadas com new, certos staticnomes não podem ser usados. Propriedades de função como name, lengthe callnão são válidas para definir como static membros:
+
+class S {
+    static name = "s!";
+}
+
+//Por que não há classes estáticas?
+
+//TypeScript (e JavaScript) não tem uma construção chamada static classda mesma forma que C # e Java.
+
+//Essas construções só existem porque essas linguagens forçam todos os dados e funções a estarem dentro de uma classe; como essa restrição não existe no TypeScript, não há necessidade delas. Uma classe com apenas uma única instância normalmente é representada apenas como um objeto normal em JavaScript / TypeScript.
+
+//Por exemplo, não precisamos de uma sintaxe de "classe estática" no TypeScript porque um objeto regular (ou mesmo uma função de nível superior) fará o trabalho tão bem:
+
+class MyStaticClass {
+    static doSomething() {}
+}
+
+//alternativa 1
+function doSomething() {
+
+}
+//alternativa 2
+const myHelperObject = {
+    doSomething(){},
+}
+
+//blocos estaticos nas classes
+
+class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+
+    static {
+        try {
+            const lastInstances = loadLastInstances();
+            Foo.#count += lastInstances.length;
+        }
+        catch{
+
+        }
+    }
+}
+
+
+//Classes Genéricas
+
+
+//As classes, assim como as interfaces, podem ser genéricas. Quando uma classe genérica é instanciada com new, seus parâmetros de tipo são inferidos da mesma maneira que em uma chamada de função:
+
+class Box<Type> {
+    contents: Type;
+    constructor(value: Type) {
+        this.contents = value;
+    }
+}
+const bBox = new Box("hello");
+
+//As classes podem usar restrições e padrões genéricos da mesma forma que as interfaces.
+
+//Parâmetros de tipo em membros estáticos
+//Este código não é legal e pode não ser óbvio por que:
+
+class Box2<Type> {
+    static defaultValue: Type;
+}
+
+//Lembre-se de que os tipos são sempre totalmente apagados! Em tempo de execução, há apenas um Box.defaultValue slot de propriedade. Isso significa que a configuração Box<string>.defaultValue(se isso fosse possível) também mudaria Box<number>.defaultValue- não é bom. Os staticmembros de uma classe genérica nunca podem se referir aos parâmetros de tipo da classe.
+
+// ============================== //
+
+//this
+
+//É importante lembrar que o TypeScript não altera o comportamento de tempo de execução do JavaScript e que o JavaScript é famoso por ter alguns comportamentos de tempo de execução peculiares.
+
+//O manuseio do JavaScript thisé realmente incomum:
+
+class MyClass3 {
+    name = "myClass";
+    getName() {
+        return this.name;
+    }
+}
+const c3 = new MyClass3();
+const obj = {
+    name: "obj",
+    getName: c3.getName,
+}
+
+//imprime "obj" nao "myclass";
+console.log(obj.getName());
+
+
+//Resumindo, por padrão, o valor de thisdentro de uma função depende de como a função foi chamada . Neste exemplo, como a função foi chamada por meio da objreferência, seu valor de thisera objem vez da instância da classe.
+
+//Isso raramente é o que você deseja que aconteça! O TypeScript fornece algumas maneiras de atenuar ou prevenir esse tipo de erro.
