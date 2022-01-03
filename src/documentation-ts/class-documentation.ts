@@ -441,3 +441,109 @@ class SpecialGreeter extends Greeter3 {
 const g3 = new SpecialGreeter();
 g3.greet();
 g3.getName(); //Property 'getName' is protected and only accessible within class 'Greeter' and its subclasses
+
+//exposicao de protected membros
+
+//As classes derivadas precisam seguir seus contratos de classe base, mas podem optar por expor um subtipo de classe base com mais recursos. Isso inclui tornar os protectedmembros public:
+
+class Base5 {
+  protected m = 10;
+}
+
+class Derived5 extends Base5 {
+  //No modifier, so default is "public"
+  m = 15;
+}
+const d2 = new Derived5();
+console.log(d2.m); //ok
+
+//protectedAcesso de hierarquia cruzada
+
+//Diferentes linguagens OOP discordam sobre se é legal acessar um protectedmembro por meio de uma referência de classe base:
+
+class Base6 {
+  protected x = 1;
+}
+
+class Derived6 extends Base6 {
+  protected x: number = 5;
+
+}
+
+class Derived6_2 extends Base6 {
+    f1(other: Derived6_2) {
+        other.x = 10;
+    }
+}
+
+f2(other: Base6) {
+    other.x = 10;
+    //Property 'x' is protected and only accessible through an instance of class 'Derived2'. This is an instance of class 'Base'.
+}
+
+
+//private
+
+//private é semelhante ao protected, mas nao permite acesso ao membro de subclasses:
+
+class Base7 {
+    private x = 0;
+}
+
+const b7 = new Base7();
+//nao consegue acessar de fora da classe
+console.log(b7.x);
+
+//Como os private membros não são visíveis para as classes derivadas, uma classe derivada não pode aumentar sua visibilidade:
+
+class Base8 {
+    private x = 0;
+}
+
+class Derived8 extends Base8 {
+    x = 1;
+}
+
+// privateAcesso entre instâncias
+
+//Diferentes linguagens OOP discordam sobre se diferentes instâncias da mesma classe podem acessar os privatemembros umas das outras . Embora linguagens como Java, C #, C ++, Swift e PHP permitam isso, Ruby não.
+
+//O TypeScript permite privateacesso entre instâncias :
+
+class A {
+    private x = 10;
+
+    public sameAs(other: A) {
+        //sem erro
+        return other.x === this.x;
+    }
+}
+
+
+//ressalvas
+
+//Como outros aspectos do sistema de tipo do TypeScript, privatee protected são aplicados apenas durante a verificação de tipo .
+
+//Isso significa que as construções de tempo de execução do JavaScript, como inuma pesquisa de propriedade simples, ainda podem acessar um membro privateou protected:
+
+class MySafe {
+    private secretKey = 12345;
+}
+
+//em um arquivo javascript
+const s = new MySafe();
+//vai printar 12345;
+console.log(s.secretKey);
+
+//privatetambém permite o acesso usando a notação de colchetes durante a verificação de tipo. Isso torna os privatecampos -declarados potencialmente mais fáceis de acessar para coisas como testes de unidade, com a desvantagem de que esses campos são soft private e não impõem estritamente a privacidade
+
+class Mysafe2 {
+    private secretKey = 123;
+}
+const s2 = new Mysafe2();
+
+//nao permitido durante a checagem de tipos
+console.log(s2.secretKey);
+
+//OK
+console.log(s2["secretKey"]);
