@@ -54,3 +54,5 @@ const votationApp = new VotationApp();
 votationApp.addVotation(votation1);
 
 votationApp.showVotations();
+
+console.log('Oi');
