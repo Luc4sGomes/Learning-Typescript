@@ -687,3 +687,123 @@ console.log(obj.getName());
 //Resumindo, por padrão, o valor de thisdentro de uma função depende de como a função foi chamada . Neste exemplo, como a função foi chamada por meio da objreferência, seu valor de thisera objem vez da instância da classe.
 
 //Isso raramente é o que você deseja que aconteça! O TypeScript fornece algumas maneiras de atenuar ou prevenir esse tipo de erro.
+
+
+//Funções de seta
+
+//Se você tem uma função que muitas vezes será chamada de uma maneira que perde seu this contexto, pode fazer sentido usar uma propriedade de função de seta em vez de uma definição de método:
+
+class MyClass5 {
+    name = "my class";
+    getName = () => {
+        return this.name;
+    };
+}
+
+const c1 = new MyClass5();
+const g1 = c1.getName;
+
+//imprime "my class" ao inves de crashar
+console.log(g1());
+
+//Isso tem algumas compensações:
+
+
+/*O thisvalor é garantido como correto em tempo de execução, mesmo para código não verificado com TypeScript
+Isso usará mais memória, pois cada instância de classe terá sua própria cópia de cada função definida dessa maneira
+Você não pode usar super.getNameem uma classe derivada, porque não há entrada na cadeia de protótipos para buscar o método da classe base de*/
+
+//this parametros
+
+//Em uma definição de método ou função, um parâmetro inicial chamado thistem um significado especial no TypeScript. Esses parâmetros são apagados durante a compilação:
+
+//Typescript input with 'this' parameter
+
+function fn(this: string, x: number) {
+
+}
+//Javascript output
+function fn1(x) {
+
+}
+
+
+//O TypeScript verifica se a chamada de uma função com um thisparâmetro é feita com um contexto correto. Em vez de usar uma função de seta, podemos adicionar um thisparâmetro às definições de método para impor estaticamente que o método seja chamado corretamente:
+
+class MyClass6 {
+    name = "my class";
+    getName(this: MyClass) {
+        return this.name;
+    }
+}
+
+const c2 = new MyClass6();
+//ok
+c2.getName();
+
+//error, deve crashar
+const g4 = c2.getName;
+console.log(g4);
+
+
+class Box3 {
+    contents: string = "";
+    set(value: string) {
+        this.contents = value;
+        return this;
+    }
+}
+
+class ClearableBox extends Box3 {
+    clear() {
+        this.contents = "";
+    }
+}
+
+const a = new ClearableBox();
+const b6 = a.set("hello");
+
+
+//Você também pode usar thisem uma anotação de tipo de parâmetro:
+
+class Box4 {
+    content: string = "";
+    sameAs(other: this) {
+        return other.content === this.content;
+    }
+}
+
+//Relacionamentos entre classes
+//Na maioria dos casos, as classes no TypeScript são comparadas estruturalmente, da mesma forma que os outros tipos.
+
+//Por exemplo, essas duas classes podem ser usadas no lugar uma da outra porque são idênticas:
+
+class Point6 {
+    x = 0;
+    y = 0;
+}
+
+class Point7 {
+    x = 0;
+    y = 0;
+}
+
+//ok
+const p: Point6 = new Point7();
+
+//Da mesma forma, relacionamentos de subtipos entre classes existem mesmo se não houver herança explícita:
+
+class Person {
+    name: string;
+    age: number;
+}
+
+class Employee {
+    name: string;
+    age: number;
+    salary: number;
+}
+
+//ok
+
+const p: Person = new Employee();
