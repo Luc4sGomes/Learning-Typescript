@@ -1,16 +1,26 @@
 //um decorator nada mais é que um objeto "impostor" ele simplesmente finge ser seu objeto, mas no meio do caminho ele pode decorar seu objeto
 
 //Veremos aqui decorators de classes
+
+@decorator
 export class Animal {
   private cor: string;
-  constructor(cor: string) {
+  public name: string;
+  constructor(name: string, cor: string) {
     this.cor = cor;
+    this.name = name;
   }
-  function decorator<T extends new () => any>(target: T):T {
-     return class extends target{};
+  function decorator<T extends new (...args: any[]) => any>(target: T):T {
+     return class extends target{
+       cor: string;
+       constructor(...args: any[]){
+         super(...args);
+         this.cor = args[0].split('');
+       }
+     };
   }
 }
 
 const AnimalDecorated = decorator(Animal);
-const animal = new AnimalDecorated('azul');
+const animal = new Animal('azul','lucas');
 console.log(animal);
