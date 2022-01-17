@@ -24,3 +24,5 @@ function decorator<T extends new (...args: any[]) => any>(target: T): T {
 
 const animal = new Animal('azul', 'lucas');
 console.log(animal);
+
+//o decorador de class ele so recebe a classe, é chamado na criação em si.
