@@ -10,17 +10,17 @@ export class Animal {
     this.cor = cor;
     this.name = name;
   }
-  function decorator<T extends new (...args: any[]) => any>(target: T):T {
-     return class extends target{
-       cor: string;
-       constructor(...args: any[]){
-         super(...args);
-         this.cor = args[0].split('');
-       }
-     };
-  }
+}
+function decorator<T extends new (...args: any[]) => any>(target: T): T {
+  return class extends target {
+    cor: string;
+    constructor(...args: any[]) {
+      super(...args);
+      this.cor = args[0].split('');
+      this.name = args[1].split('');
+    }
+  };
 }
 
-const AnimalDecorated = decorator(Animal);
-const animal = new Animal('azul','lucas');
+const animal = new Animal('azul', 'lucas');
 console.log(animal);
