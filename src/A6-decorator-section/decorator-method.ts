@@ -2,12 +2,16 @@ function decorator(
   classPrototype: any,
   nameMethod: string,
   descriptor: PropertyDescriptor,
-): any {
+): PropertyDescriptor {
   console.log(classPrototype);
   console.log(nameMethod);
   console.log(descriptor);
 
-  return {};
+  return {
+    value: function (...args: string[]) {
+      return args[0].toUpperCase();
+    },
+  };
 }
 
 export class UmaPessoa {
@@ -40,5 +44,6 @@ export class UmaPessoa {
 }
 
 const person = new UmaPessoa('lucas', 'gomes', 20);
+
 const method = person.method('ola mundo');
 console.log(method);
