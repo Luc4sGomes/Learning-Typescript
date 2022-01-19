@@ -18,5 +18,3 @@ namespace MeuNameSpace {
 
 const pessoa = new MeuNameSpace.PersonOfNameSpace('Lucas');
 console.log(pessoa);
-
-export default 1;
