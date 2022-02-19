@@ -56,8 +56,33 @@ interface Square {
   sideLength: number;
 }
 
-const c: Circle = {
-  //kind: ShapeKind.Square, Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
+//const c: Circle = {
+//kind: ShapeKind.Square, Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
 
-  radius: 110,
-};
+//radius: 110,
+//};
+
+//The other change is that enum types themselves effectively become a union of each enum member. With union enums, the type system is able to leverage the fact that it knows the exact set of values that exist in the enum itself. Because of that, TypeScript can catch bugs where we might be comparing values incorrectly. For example:
+
+enum E {
+  Foo,
+  Barm,
+}
+
+function f(x: E) {
+  if (x !== E.Foo || x !== E.Bar) {
+    //...
+  }
+}
+
+function UseState<S>() {
+  let state: S;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: S) {
+    state = newState;
+  }
+}
