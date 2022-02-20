@@ -86,3 +86,9 @@ function UseState<S>() {
     state = newState;
   }
 }
+
+function calcularAlgumaCoisa(x: number, y: number) {
+  const keepResult: number = Math.pow(x, y);
+}
+
+calcularAlgumaCoisa(10, 20);
