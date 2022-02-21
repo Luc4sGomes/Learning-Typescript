@@ -4,6 +4,7 @@ import helloWorld from './modules';
 import { pi, phi, absolute } from './modules';
 import { pi as piNumber } from './modules';
 import RandomNumberGenerator, { pi as pi2 } from './modules';
+import { StringValidator } from './modules';
 
 import { Cat, Dog } from './modules';
 helloWorld();
@@ -25,3 +26,11 @@ import './modules'; //nesse caso o import nao faz nada
 console.log('3.14');
 
 type Animals = Cat | Dog;
+
+export const numberRegexp = /^[0-9]+$/;
+
+export class ZipCodeValidator implements StringValidator {
+  isAcceptable(s: string): boolean {
+    return s.length === 5 && numberRegexp.test(s);
+  }
+}

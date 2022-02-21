@@ -1,6 +1,8 @@
 //os modulos sempre sao executados dentro do seu proprio escopo
 //para usar uma variavel, classe interface de um modulo, voce precisa importa-la usando um dos formularios de importação
 
+import { numberRegexp } from './modules-import';
+
 export {}; // um modulo que nao export nada
 
 //Modulos em typescript
@@ -47,3 +49,24 @@ export interface Dog {
   yearOfBirth: number;
 }
 //importando isso no outro arquivo
+
+//exportar
+//exportando uma declaração
+/*Qualquer declaração (como uma variável, função, classe, alias de tipo ou interface) pode ser exportada adicionando a palavra- exportchave.*/
+
+export interface StringValidator {
+  //importando no outro arquivo
+  isAcceptable(s: string): boolean;
+}
+
+/*Exportar extratos
+As instruções de exportação são úteis quando as exportações precisam ser renomeadas para os consumidores, portanto, o exemplo acima pode ser escrito como:*/
+
+class ZipCodeValidator implements StringValidator {
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
+}
+
+export { ZipCodeValidator };
+export { ZipCodeValidator as mainValidator };
