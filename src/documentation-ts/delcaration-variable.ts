@@ -69,3 +69,45 @@ function f([firstm second]: [number, number]) {
 }
 
 f([1, 2]);
+
+
+//Você pode criar uma variável para os itens restantes em uma lista usando a sintaxe ...:
+
+let [first, ...rest] = [1,2,3,4];
+console.log(first); // output 1
+console.log(rest); //output[2,3,4]
+
+
+/*Desestruturação de tuplas
+Tuplas podem ser desestruturadas como arrays; as variáveis ​​de desestruturação obtêm os tipos dos elementos de tupla correspondentes:*/
+
+let tuple: [number, string, boolean] = [7, "lucas", true];
+
+let [a, b, c] = tuple;
+
+
+//É um erro desestruturar uma tupla além do alcance de seus elementos:
+
+let[a, b, c, d] = tuple; //error, sem elemento no indice 3;
+
+
+/*Desestruturação de objetos
+Você também pode desestruturar objetos:*/
+
+let objeto = {
+    a: "foo",
+    b: 12,
+    c: "bar",
+};
+
+let { a, b } =  objeto;
+
+
+/*Propagação
+O operador spread é o oposto da desestruturação. Ele permite que você espalhe uma matriz em outra matriz ou um objeto em outro objeto. Por exemplo:*/
+
+let first = [1, 2];
+let second = [3, 4];
+let bothPlus = [0, ...first, ...second, 5];
+
+/*Isso dá a BothPlus o valor [0, 1, 2, 3, 4, 5]. A propagação cria uma cópia superficial de firste second. Eles não são alterados pela propagação.*/
