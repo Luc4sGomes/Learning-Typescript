@@ -16,22 +16,22 @@ class Queue {
     this.data = [];
   }
 
-  enqueue(item) {
-    this.data.push(item);
-    console.log(`item chegou na fila ${item}`);
+  enqueue(pessoa) {
+    this.data.push(pessoa);
+    console.log(`essa pessoa entrou na fila ${pessoa}`);
   }
 
   dequeue() {
-    const item = this.data.shift();
-    console.log(`item saiu da fila ${item}`);
+    const pessoa = this.data.shift();
+    console.log(`essa pessoa saiu da fila ${pessoa}`);
   }
 }
 
 const fila = new Queue();
 
-fila.enqueue('Lucas');
-fila.enqueue('Carla');
-fila.enqueue('Max');
+fila.enqueue('lucas');
+fila.enqueue('carla');
+fila.enqueue('joao');
 
 fila.dequeue();
 fila.dequeue();
