@@ -15,3 +15,4 @@ function printCordenada(pontos: Point2) {
 }
 
 printCordenada({x: 101, y: 50});
+
